@@ -199,7 +199,7 @@ public class Travail_Pratique_3 extends Application {
          * @return Index resultant de la recherche
          */
         public int getColumn() {
-            return (int)(getTranslateX() - HEADER_HEIGHT) / SIZE;
+            return (int)getTranslateX() / SIZE;
         }
         
         /**
