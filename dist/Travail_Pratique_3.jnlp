@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Travail_Pratique_3.jar" size="5484" download="eager" />
+    <jar href="Travail_Pratique_3.jar" size="6965" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="travail_pratique_3.Travail_Pratique_3"  name="Travail_Pratique_3" />
   <update check="always"/>
