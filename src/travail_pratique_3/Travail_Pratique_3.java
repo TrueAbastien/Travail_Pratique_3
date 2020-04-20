@@ -27,7 +27,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
@@ -44,30 +43,61 @@ import javafx.stage.Stage;
  */
 public class Travail_Pratique_3 extends Application {
     
+    /**
+     * Largeur de la Grille de jeu.
+     */
     private static final int W = 6;
+    /**
+     * Hauteur de la Grille de jeu.
+     */
     private static final int H = 6;
+    /**
+     * Taille d'une boule à l'unite.
+     */
     private static final int SIZE = 100;
+    /**
+     * Hauteur de l'Entete de l'affichage.
+     */
     private static final int HEADER_HEIGHT = 35;
     
+    
+    /**
+     * Liste de tout les sons de victoires possibles.
+     */
     private List<AudioClip> scoringClips;
-
+    
+    /**
+     * Tableau de toutes les couleurs possibles en jeu.
+     */
     private Color[] colors = new Color[] {
             Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW
     };
-
+    
+    /**
+     * Boule selectionnee actuellement.
+     */
     private Boule selected = null;
+    /**
+     * Liste de toutes les boules sur la Grille de jeu.
+     */
     private List<Boule> Tab_Boules;
-
+    
+    /**
+     * Score actuel de la partie en cours.
+     */
     private IntegerProperty score = new SimpleIntegerProperty();
     
     /**
      * Creation du contenu initial de la scène de jeu.
      * @return Scene de jeu sous forme abstraite
      */
-    private Parent createContent() {
+    private Parent createContent()
+    {
+        // Cree l'affichage de jeu actuel
         BorderPane root = new BorderPane();
         root.setPrefSize(W * SIZE, H * SIZE + 100);
-
+        
+        // Initalise les listes et tableaux necessaires au deroulement du jeu
         Tab_Boules = IntStream.range(0, W * H)
                 .mapToObj(i -> new Point2D(i % W, i / W))
                 .map(Boule::new)
@@ -76,15 +106,18 @@ public class Travail_Pratique_3 extends Application {
                 new AudioClip(new File("ressources/audio/win1.mp3").toURI().toString()),
                 new AudioClip(new File("ressources/audio/win2.mp3").toURI().toString()),
                 new AudioClip(new File("ressources/audio/win3.mp3").toURI().toString()));
-
+        
+        // Ajoute le tableau de Boule en tant qu'enfant de l'affichage actuel
         root.getChildren().addAll(Tab_Boules);
-
+        
+        // Affiche le score
         Text textScore = new Text();
         textScore.setTranslateX(W * SIZE / 4);
         textScore.setTranslateY(H * SIZE + 90);
         textScore.setFont(Font.font(68));
         textScore.textProperty().bind(score.asString("Score: [%d]"));
         
+        // Creation du Menu
         MenuItem restartItem = new MenuItem("Restart");
         restartItem.setOnAction(e -> {
             score.set(0);
@@ -102,8 +135,10 @@ public class Travail_Pratique_3 extends Application {
         VBox menuBar = new VBox(new MenuBar(toolbar, help));
         menuBar.setPrefHeight(HEADER_HEIGHT);
         root.setTop(menuBar);
-
+        
+        // Ajoute le score a l'affichage
         root.getChildren().add(textScore);
+        
         return root;
     }
     
@@ -159,22 +194,30 @@ public class Travail_Pratique_3 extends Application {
      * Representation d'une boule sur la grille de jeu.
      * @author carm
      */
-    private class Boule extends Parent {
+    private class Boule extends Parent
+    {
+        /**
+         * Affichage de la Boule en jeu: cercle de taille fixe.
+         */
         private Circle circle = new Circle(SIZE / 2);
         
         /**
          * Constructeur initialisant les caracteristiques et evenements lies a une boule dans le jeu.
          * @param point Position de la boule creee dans la grille de jeu
          */
-        public Boule(Point2D point) {
+        public Boule(Point2D point)
+        {
+            // Initialise les caracteristiques du cercle
             circle.setCenterX(SIZE / 2);
             circle.setCenterY(SIZE / 2);
             circle.setFill(colors[new Random().nextInt(colors.length)]);
-
+            
+            // Deplace le cercle a une position plus appropriee
             setTranslateX(point.getX() * SIZE);
             setTranslateY(point.getY() * SIZE + HEADER_HEIGHT);
             getChildren().add(circle);
-
+            
+            // Met en place le code lie au clique de la souris sur une boule
             setOnMouseClicked(event -> {
                 if (selected == null) {
                     selected = this;
